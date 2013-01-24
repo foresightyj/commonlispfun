@@ -82,3 +82,36 @@
 
 (defmacro nil! (x)
   `(setf ,x nil))
+
+(defun make-queue ()
+  (cons nil nil))
+
+(defun enqueue (obj q)
+  (if (null (car q))
+      (setf (car q) (setf (cdr q) (list obj)))
+      (setf (cdr q) (setf (cdr (cdr q)) (list obj))))
+  (car q))
+
+(defun dequeue (q)
+  (pop (car q)))
+
+(defmacro while (test &rest body)
+  `(do ()
+       ((not ,test) nil)
+     ,@body))
+
+(defun quick-sort (vec starti endi)
+  (let ((pivotv (svref vec (round (+ starti endi) 2)))
+	(lefti starti)
+	(righti endi))
+    (while (<= lefti righti)
+      (while (> pivotv (svref vec lefti)) (incf lefti))
+      (while (< pivotv (svref vec righti)) (decf righti))
+      (when (<= lefti righti)
+	(rotatef (svref vec lefti) (svref vec righti))
+	(incf lefti)
+	(decf righti)))
+
+    (if (> (- righti starti) 1) (quick-sort vec starti righti))
+    (if (> (- endi lefti) 1) (quick-sort vec lefti endi))))
+
