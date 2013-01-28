@@ -51,3 +51,7 @@
   (interactive)
   (insert-char 040 1)
 )
+
+
+;;; set MIT scheme stuff
+(setq scheme-program-name "scm")
